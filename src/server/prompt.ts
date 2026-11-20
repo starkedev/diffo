@@ -112,7 +112,10 @@ export function devCliFor(checkoutRoot: string): string {
   return `ENV=development ${checkoutRoot}/node_modules/.bin/tsx ${checkoutRoot}/src/cli.ts`
 }
 
-export const CLI = IS_DEV ? devCliFor(CHECKOUT_ROOT) : NPX
+/** `DIFFO_CLI` spells the commands diffo prints for its agent, for an install
+ * where `npx` would resolve a different copy than the one running (a patched or
+ * pinned build on PATH). */
+export const CLI = IS_DEV ? devCliFor(CHECKOUT_ROOT) : process.env.DIFFO_CLI?.trim() || NPX
 
 export function buildCliCommands(cli: string) {
   return {
